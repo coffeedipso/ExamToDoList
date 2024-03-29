@@ -1,0 +1,58 @@
+﻿<Window x:Class="ExamTodoList.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExamTodoList" xmlns:viewmodel="clr-namespace:ExamTodoList.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Шапка приложения -->
+        <Grid Grid.Row="0" Background="#2196F3" >
+            <TextBlock Text="Список дел" FontSize="24" Foreground="White"/>
+        </Grid>
+
+        <!-- Список дел -->
+        <Grid Grid.Row="1" Margin="20">
+            <DataGrid ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedTask}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название" Binding="{Binding Title}"/>
+                    <DataGridTextColumn Header="Срок" Binding="{Binding DueDate}"/>
+                    <DataGridTextColumn Header="Приоритет" Binding="{Binding Priority}"/>
+                    <DataGridTextColumn Header="Комментарий" Width="*" Binding="{Binding Comment}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <!-- Форма создания задачи -->
+        <Grid Grid.Row="2" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+
+            </Grid.RowDefinitions>
+            <TextBox x:Name="txtTitle" Text="{Binding Title, Mode=TwoWay}" Grid.Column="0" VerticalAlignment="Center"/>
+            <DatePicker x:Name="dpDueDate" SelectedDate="{Binding DueDate, Mode=TwoWay}" Grid.Column="1" Margin="10" VerticalAlignment="Center"/>
+            <ComboBox x:Name="cbPriority" Grid.Column="2" Width="120" VerticalAlignment="Center"
+              ItemsSource="{Binding PriorityCategories}" SelectedItem="{Binding SelectedPriorityCategory}"/>
+            <Button Grid.Column="3" Content="Добавить" Width="80" Margin="10,0,0,0" VerticalAlignment="Center"
+            Command="{Binding AddTaskCommand}"/>
+            <TextBox Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Comment, Mode=TwoWay}" VerticalAlignment="Top" Width="415"/>
+            <Button Grid.Row="1" Grid.Column="2"  Width="120" Command="{Binding FileWriter}">В файл</Button>
+            <Button Grid.Row="1" Grid.Column="3" Width="80" Margin="10,0,0,0" Command="{Binding FileReader}">Считать</Button>
+        </Grid>
+    </Grid>
+</Window>
